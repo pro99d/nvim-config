@@ -15,17 +15,26 @@ return {
   },
   "preservim/nerdtree",
   "Xuyuanp/nerdtree-git-plugin",
-  "edluffy/hologram.nvim",
+  --"edluffy/hologram.nvim",
+  "echasnovski/mini.pairs",
   {
     "williamboman/mason.nvim",
     config = true
   },
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require('lspconfig').pyright.setup{}
-    end
-  },
+{
+  "neovim/nvim-lspconfig",
+  config = function()
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    require('lspconfig').pyright.setup{
+      capabilities = capabilities,
+      on_attach = function(client)
+        client.server_capabilities.textDocument_sync = {
+          change = { notification = "textDocument/didChange" }
+        }
+      end
+    }
+  end
+},
   {
     "michaelb/sniprun",
     branch = "master",
@@ -110,10 +119,4 @@ return {
       })
     end
   },
-  {
-    'goolord/alpha-nvim',
-    config = function()
-      require'alpha'.setup(require'alpha.themes.dashboard'.config)
-    end
-  }
-}
+} 
