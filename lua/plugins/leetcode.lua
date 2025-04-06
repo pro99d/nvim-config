@@ -1,78 +1,77 @@
-return{
- {
+return {
+  {
     "kawre/leetcode.nvim",
     dependencies = {
-        "nvim-telescope/telescope.nvim",
-        "nvim-lua/plenary.nvim",
-        "MunifTanjim/nui.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
     },
     opts = {
-        
-    ---@type string
-    arg = "leetcode.nvim",
+      ---@type string
+      arg = "leetcode.nvim",
 
-    ---@type lc.lang
-    lang = "python3",
+      ---@type lc.lang
+      lang = "python3",
 
-    cn = { -- leetcode.cn
+      cn = { -- leetcode.cn
         enabled = false, ---@type boolean
         translator = true, ---@type boolean
         translate_problems = true, ---@type boolean
-    },
+      },
 
-    ---@type lc.storage
-    storage = {
+      ---@type lc.storage
+      storage = {
         home = vim.fn.stdpath("data") .. "/leetcode",
         cache = vim.fn.stdpath("cache") .. "/leetcode",
-    },
+      },
 
-    ---@type table<string, boolean>
-    plugins = {
+      ---@type table<string, boolean>
+      plugins = {
         non_standalone = false,
-    },
+      },
 
-    ---@type boolean
-    logging = true,
+      ---@type boolean
+      logging = true,
 
-    injector = {}, ---@type table<lc.lang, lc.inject>
+      injector = {}, ---@type table<lc.lang, lc.inject>
 
-    cache = {
+      cache = {
         update_interval = 60 * 60 * 24 * 7, ---@type integer 7 days
-    },
+      },
 
-    console = {
+      console = {
         open_on_runcode = true, ---@type boolean
 
         dir = "row", ---@type lc.direction
 
         size = { ---@type lc.size
-            width = "90%",
-            height = "75%",
+          width = "90%",
+          height = "75%",
         },
 
         result = {
-            size = "60%", ---@type lc.size
+          size = "60%", ---@type lc.size
         },
 
         testcase = {
-            virt_text = true, ---@type boolean
+          virt_text = true, ---@type boolean
 
-            size = "40%", ---@type lc.size
+          size = "40%", ---@type lc.size
         },
-    },
+      },
 
-    description = {
+      description = {
         position = "left", ---@type lc.position
 
         width = "40%", ---@type lc.size
 
         show_stats = true, ---@type boolean
-    },
+      },
 
-    ---@type lc.picker
-    picker = { provider = nil },
+      ---@type lc.picker
+      picker = { provider = nil },
 
-    hooks = {
+      hooks = {
         ---@type fun()[]
         ["enter"] = {},
 
@@ -81,9 +80,9 @@ return{
 
         ---@type fun()[]
         ["leave"] = {},
-    },
+      },
 
-    keys = {
+      keys = {
         toggle = { "q" }, ---@type string|string[]
         confirm = { "<CR>" }, ---@type string|string[]
 
@@ -91,13 +90,13 @@ return{
         use_testcase = "U", ---@type string
         focus_testcases = "H", ---@type string
         focus_result = "L", ---@type string
-    },
+      },
 
-    ---@type lc.highlights
-    theme = {},
+      ---@type lc.highlights
+      theme = {},
 
-    ---@type boolean
-    image_support = false,
-    },
-},
-}
+      ---@type boolean
+      image_support = false,
+    }, -- <-- Закрывающая скобка для opts
+  },
+}   

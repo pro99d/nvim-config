@@ -36,6 +36,7 @@ vim.api.nvim_create_user_command('RunPython', function()
 
   -- Запускаем скрипт с правvim.opt.guifont = { "Source Code Pro", ":h12" }ильным интерпретатором
   vim.cmd(string.format("split | terminal %s %s", python_path, vim.fn.expand("%")))
+  --vim.cmd("q")
 end, {})
 
 
@@ -52,5 +53,4 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.opt.guifont = { "Hack Nerd Font", ":h11" }
-
 require('mini.pairs').setup()
