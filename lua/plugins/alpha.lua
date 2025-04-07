@@ -13,12 +13,12 @@ return {
         [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
       }
       dashboard.section.buttons.val = {
-        dashboard.button('f', 'Find file', ':Telescope find_files <CR>'),
-        dashboard.button('e', 'New file', ':ene <BAR> startinsert <CR>'),
-        dashboard.button('r', 'Recently opened', ':Telescope oldfiles <CR>'),
-        dashboard.button('s', 'Session', ':SessionLoad <CR>'),
-        dashboard.button('c', 'Config', ':e $MYVIMRC <CR>'),
-        dashboard.button('q', 'Quit', ':qa<CR>'),
+        dashboard.button('f', 'Найти файл', ':Telescope find_files <CR>'),
+        dashboard.button('e', 'Новый Файл', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('r', 'Недавно открытые', ':Telescope oldfiles <CR>'),
+        dashboard.button('s', 'Сессия', ':SessionLoad <CR>'),
+        dashboard.button('c', 'Редактировать конфиг', ':e $MYVIMRC <CR>'),
+        dashboard.button('q', 'Выход', ':qa!<CR>'),
       }
       require('alpha').setup(dashboard.config)
     end,

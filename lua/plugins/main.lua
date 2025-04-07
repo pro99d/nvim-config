@@ -3,6 +3,7 @@ return {
   {"nvim-tree/nvim-web-devicons", opts = {}},
   "nvim-telescope/telescope.nvim",
   "smzm/hydrovim",
+  "nvim-lualine/lualine.nvim",
   {
     "Dan7h3x/neaterm.nvim",
     branch = "stable",
@@ -35,6 +36,10 @@ return {
     }
   end
 },
+"hrsh7th/nvim-cmp",
+  "hrsh7th/cmp-nvim-lsp",
+  "L3MON4D3/LuaSnip",
+  "saadparwaiz1/cmp_luasnip",
   {
     "michaelb/sniprun",
     branch = "master",
