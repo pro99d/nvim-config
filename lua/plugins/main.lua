@@ -2,8 +2,6 @@ return {
   {"folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {}},
   {"nvim-tree/nvim-web-devicons", opts = {}},
   "nvim-telescope/telescope.nvim",
-  "smzm/hydrovim",
-  "nvim-lualine/lualine.nvim",
   {
     "Dan7h3x/neaterm.nvim",
     branch = "stable",

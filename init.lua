@@ -54,3 +54,4 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 vim.opt.guifont = { "Hack Nerd Font", ":h11" }
 require('mini.pairs').setup()
+require('config.lualine')
