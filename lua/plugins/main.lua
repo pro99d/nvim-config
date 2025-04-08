@@ -2,6 +2,9 @@ return {
   {"folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {}},
   {"nvim-tree/nvim-web-devicons", opts = {}},
   "nvim-telescope/telescope.nvim",
+    "folke/which-key.nvim",
+
+
   {
     "Dan7h3x/neaterm.nvim",
     branch = "stable",
@@ -64,6 +67,8 @@ return {
     })
   end,
 },
+"akinsho/bufferline.nvim",
+"echasnovski/mini.icons",
 {
   "iamcco/markdown-preview.nvim",
   build = "cd app && npm install",
