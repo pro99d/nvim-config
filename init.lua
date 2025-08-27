@@ -32,7 +32,18 @@ dofile(vim.g.base46_cache .. "statusline")
 require "options"
 require "nvchad.autocmds"
 
+-- Refresh if files in current directory changed
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave", "DirChanged" }, {
+  group = vim.api.nvim_create_augroup("LspAutoRefresh", { clear = true }),
+  callback = function()
+    vim.cmd("silent! checktime")
+  end,
+})
+
 vim.schedule(function()
   require "mappings"
 end)
 
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
