@@ -5,16 +5,43 @@ return {
         -- event = 'BufWritePre', -- uncomment for format on save
         opts = require "configs.conform",
     },
-    -- These are some examples, uncomment them if you want to see them work!
+    -- Mason for managing LSP servers
+    {
+        "williamboman/mason.nvim",
+        config = true,
+    },
+    -- Setup LSP servers manually since mason-lspconfig has compatibility issues
+    {
+        "neovim/nvim-lspconfig",
+        config = function()
+            require("configs.lspconfig").defaults() -- This will setup lua_ls
+            
+            -- Setup other servers you mentioned
+            local lspconfig = require("lspconfig")
+            local configs = require("configs.lspconfig")
+            
+            -- Setup pyright for Python
+            lspconfig.pyright.setup {
+                on_attach = configs.on_attach,
+                capabilities = configs.capabilities,
+                on_init = configs.on_init,
+            }
+            
+            -- Setup clangd for C/C++
+            lspconfig.clangd.setup {
+                on_attach = configs.on_attach,
+                capabilities = configs.capabilities,
+                on_init = configs.on_init,
+            }
+        end,
+    },
+    -- LSP configuration 
     {
         "neovim/nvim-lspconfig",
         config = function()
             require "configs.lspconfig"
         end,
     },
-
-    -- test new blink
-
     {
         "nvim-treesitter/nvim-treesitter",
         opts = {
@@ -25,53 +52,6 @@ return {
                 "html",
                 "css",
                 "python",
-            },
-        },
-    },
-
-    {
-        "neovim/nvim-lspconfig",
-        ---@class PluginLspOpts
-        opts = {
-            ---@type lspconfig.options
-            servers = {
-                -- pyright will be automatically installed with mason and loaded with lspconfig
-                pyright = { venvPath = "./.venv/bin/" },
-            },
-        },
-
-        -- add tsserver and setup with typescript.nvim instead of lspconfig
-        {
-            "neovim/nvim-lspconfig",
-            dependencies = {
-                "jose-elias-alvarez/typescript.nvim",
-                -- init = function()
-                --   require("lazyvim.util").lsp.on_attach(function(_, buffer)
-                --   -- stylua: ignore
-                --   vim.keymap.set( "n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
-                --     vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
-                --   end)
-                -- end,
-            },
-            ---@class PluginLspOpts
-            opts = {
-                ---@type lspconfig.options
-                servers = {
-                    -- tsserver will be automatically installed with mason and loaded with lspconfig
-                    tsserver = {},
-                },
-                -- you can do any additional lsp server setup here
-                -- return true if you don't want this server to be setup with lspconfig
-                ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-                setup = {
-                    -- example to setup with typescript.nvim
-                    tsserver = function(_, opts)
-                        require("typescript").setup { server = opts }
-                        return true
-                    end,
-                    -- Specify * to use this function as a fallback for any server
-                    -- ["*"] = function(server, opts) end,
-                },
             },
         },
     },

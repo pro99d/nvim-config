@@ -1,39 +1,96 @@
-require("nvchad.configs.lspconfig").defaults()
-local servers = { "html", "cssls", "pyright", "lua_ls", "clangd" }
-vim.lsp.enable(servers)
-vim.lsp.start(servers)
-local lspconfig = require("lspconfig")
-local mason_registry = require("mason-registry")
-local mason_lspconfig_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not mason_lspconfig_ok then
-    vim.notify("mason-lspconfig not found", vim.log.levels.WARN)
-    return
+local M = {}
+local map = vim.keymap.set
+
+-- export on_attach & capabilities
+M.on_attach = function(client, bufnr)
+  local function opts(desc)
+    return { buffer = bufnr, desc = "LSP " .. desc }
+  end
+
+  map("n", "gD", vim.lsp.buf.declaration, opts "Go to declaration")
+  map("n", "gd", vim.lsp.buf.definition, opts "Go to definition")
+  map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts "Add workspace folder")
+  map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts "Remove workspace folder")
+
+  map("n", "<leader>wl", function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, opts "List workspace folders")
+
+  map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
+  map("n", "<leader>ra", require "nvchad.lsp.renamer", opts "NvRenamer")
+  
+  -- Notify the UI about the client
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
--- ensure mason-lspconfig is set to manage lspconfig servers
-mason_lspconfig.setup({
-    ensure_installed = servers, -- add servers you want installed, e.g., "pyright"
-    automatic_installation = false,
-})
-
--- utility: register mason-installed servers with lspconfig
-local function setup_mason_servers()
-    local handlers = {}
-    -- default handler
-    handlers["*"] = function(server_name)
-        local ok, server = pcall(require, "lspconfig.server_configurations." .. server_name)
-        if not ok then return end
-        lspconfig[server_name].setup({})
+-- disable semanticTokens
+M.on_init = function(client, _)
+  if vim.fn.has "nvim-0.11" ~= 1 then
+    if client.supports_method "textDocument/semanticTokens" then
+      client.server_capabilities.semanticTokensProvider = nil
     end
-
-    -- override per-server options here, if needed:
-    handlers["pyright"] = function()
-        lspconfig.pyright.setup({})
+  else
+    if client:supports_method "textDocument/semanticTokens" then
+      client.server_capabilities.semanticTokensProvider = nil
     end
-
-    mason_lspconfig.setup_handlers(handlers)
+  end
 end
 
-setup_mason_servers()
+M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
--- read :h vim.lsp.config for changing options of lsp servers
+M.capabilities.textDocument.completion.completionItem = {
+  documentationFormat = { "markdown", "plaintext" },
+  snippetSupport = true,
+  preselectSupport = true,
+  insertReplaceSupport = true,
+  labelDetailsSupport = true,
+  deprecatedSupport = true,
+  commitCharactersSupport = true,
+  tagSupport = { valueSet = { 1 } },
+  resolveSupport = {
+    properties = {
+      "documentation",
+      "detail",
+      "additionalTextEdits",
+    },
+  },
+}
+
+M.defaults = function()
+  dofile(vim.g.base46_cache .. "lsp")
+  require("nvchad.lsp").diagnostic_config()
+
+  vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client and client.name ~= "null-ls" then  -- Skip null-ls if you have it
+        M.on_attach(client, args.buf)
+      end
+    end,
+  })
+
+  -- Setup lua_ls with specific settings
+  local lua_lsp_settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = {
+        library = {
+          vim.fn.expand "$VIMRUNTIME/lua",
+          vim.fn.stdpath "data" .. "/lazy/ui/nvchad_types",
+          vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy",
+          "${3rd}/luv/library",
+        },
+      },
+    },
+  }
+
+  -- Only setup lua_ls here, others will be handled by Mason
+  require("lspconfig").lua_ls.setup {
+    on_attach = M.on_attach,
+    capabilities = M.capabilities,
+    on_init = M.on_init,
+    settings = lua_lsp_settings,
+  }
+end
+
+return M
