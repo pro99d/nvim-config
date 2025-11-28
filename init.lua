@@ -48,5 +48,10 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+require("codecompanion").setup({
+    opts = {
+        log_level = "DEBUG", -- or "TRACE"
+    }
+})
 -- Initialize the LSP defaults from the config file
 require("configs.lspconfig").defaults()
