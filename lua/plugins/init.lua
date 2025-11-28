@@ -1,16 +1,32 @@
 return {
     {
-      "olimorris/codecompanion.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-      },
-      opts = {
-        -- NOTE: The log_level is in `opts.opts`
+        "HakonHarnes/img-clip.nvim",
         opts = {
-          log_level = "DEBUG", -- or "TRACE"
+            filetypes = {
+                codecompanion = {
+                    prompt_for_file_name = false,
+                    template = "[Image]($FILE_PATH)",
+                    use_absolute_path = true,
+                },
+            },
         },
-      },
+    },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "codecompanion" }
+    },
+    {
+        "olimorris/codecompanion.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        opts = {
+            -- NOTE: The log_level is in `opts.opts`
+            opts = {
+                log_level = "DEBUG", -- or "TRACE"
+            },
+        },
     },
     { 'wakatime/vim-wakatime', lazy = false },
     {
