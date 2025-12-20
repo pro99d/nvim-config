@@ -48,10 +48,17 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
-require("codecompanion").setup({
-    opts = {
-        log_level = "DEBUG", -- or "TRACE"
-    }
-})
+require("todo-comments").setup()
 -- Initialize the LSP defaults from the config file
 require("configs.lspconfig").defaults()
+-- Automatically save session when leaving Neovim
+vim.api.nvim_create_autocmd('VimLeave', {
+    pattern = '*',
+    command = 'mkview'
+})
+
+-- Automatically load session if it exists
+vim.api.nvim_create_autocmd('VimEnter', {
+    pattern = '*',
+    command = 'loadview'
+})
