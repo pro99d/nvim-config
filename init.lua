@@ -62,3 +62,8 @@ vim.api.nvim_create_autocmd('VimEnter', {
     pattern = '*',
     command = 'loadview'
 })
+
+vim.api.nvim_create_autocmd('VimEnter', {
+    pattern = '*.py',
+    command = 'LspStart ty'
+})
